@@ -4,15 +4,15 @@ export default function validate(values: validateProps) {
   let errors = {} as validateProps;
 
   if (!values.name) {
-    errors.name = "Name is required";
+    errors.name = "Nombre requerido";
   }
   if (!values.email) {
-    errors.email = "Email address is required";
+    errors.email = "Correo electronico requerido";
   } else if (!/\S+@\S+\.\S+/.test(values.email)) {
-    errors.email = "Email address is invalid";
+    errors.email = "Correo electronio invalido";
   }
   if (!values.message) {
-    errors.message = "Message is required";
+    errors.message = "Mensaje requerido";
   }
   return errors;
 }
