@@ -1,0 +1,26 @@
+{
+  "title": "Casos de Uso",
+  "text": "EcoChain ofrece una amplia gama de aplicaciones que van más allá del simple intercambio de valor.",
+  "section": [
+    {
+      "title": "Financiamiento de proyectos sostenibles",
+      "content": "Los titulares de ECO pueden delegar sus tokens en proyectos ecológicos, obteniendo recompensas y apoyando activamente el desarrollo sostenible.",
+      "icon": "usecase.png"
+    },
+    {
+      "title": "Compensación de carbono",
+      "content": "Las empresas pueden utilizar ECO para compensar sus emisiones de carbono, contribuyendo a la captura de carbono y otros proyectos de mitigación climática.",
+      "icon": "usecase.png"
+    },
+    {
+      "title": "Pagos sostenibles",
+      "content": "Como una alternativa a las tarjetas de crédito tradicionales, EcoChain facilita transacciones económicas y sostenibles con un impacto ambiental reducido.",
+      "icon": "usecase.png"
+    },
+    {
+      "title": "Inversión responsable",
+      "content": "EcoChain ofrece a los inversores una plataforma para crear portafolios diversificados de activos verdes, utilizando ECO como la moneda base.",
+      "icon": "usecase.png"
+    }
+  ]
+}

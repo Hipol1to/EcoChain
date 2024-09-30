@@ -1,0 +1,26 @@
+{
+  "title": "Estructura Transparente y Sostenible",
+  "text": "La estructura económica de EcoChain está diseñada para maximizar el impacto positivo. Distribuyendo un suministro total limitado a 1 billón de tokens ECO.",
+  "section": [
+    {
+      "title": "50% del suministro",
+      "content": "Asignado a traves de una mineria ecológica donde los validadores que usan energías renovables son recompensados.",
+      "icon": "notes.svg"
+    },
+    {
+      "title": "25% del suministro",
+      "content": "Es destinado a un fondo de desarrollo para financiar proyectos verdes.",
+      "icon": "notes.svg"
+    },
+    {
+      "title": "15% del suministro",
+      "content": "Reservado a la Fundacion EcoChain financiando futuras donaciones y asegurando sostenibilidad operativa.",
+      "icon": "notes.svg"
+    },
+    {
+      "title": "10% del suministro",
+      "content": "Asignado a los fundadores y equipo con un periodo de bloqueo de 4 años, garantizando la visión del proyecto a largo plazo.",
+      "icon": "notes.svg"
+    }
+  ]
+}
