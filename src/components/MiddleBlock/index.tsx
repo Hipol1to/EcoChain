@@ -146,35 +146,21 @@ const MiddleBlock = ({ title, content, button, t }: MiddleBlockProps) => {
                 <Slide direction="right" triggerOnce>
                   <FormGroup autoComplete="off" onSubmit={handleSubmit}>
                     <Col span={24}>
-                      <Block title={title} content={"content"} />
+                      <Block
+                        title={"Apoya al futuro sostenible"}
+                        content={
+                          "Únete a EcoChain y contribuye a las iniciativas globales de sostenibilidad mientras aprovechas una tecnología segura y de vanguardia."
+                        }
+                      />
                       <Input
                         type="text"
                         name="Nombre"
-                        placeholder="Tu nombre"
-                        value={values.name || ""}
+                        placeholder="Monto"
                         onChange={handleChange}
                       />
                       <ValidationType type="name" />
                     </Col>
-                    <Col span={24}>
-                      <Input
-                        type="text"
-                        name="Correo electronico"
-                        placeholder="Tu correo electronico"
-                        value={values.email || ""}
-                        onChange={handleChange}
-                      />
-                      <ValidationType type="email" />
-                    </Col>
-                    <Col span={24}>
-                      <TextArea
-                        placeholder="Tu mensaje"
-                        value={values.message || ""}
-                        name="mensaje"
-                        onChange={handleChange}
-                      />
-                      <ValidationType type="message" />
-                    </Col>
+                    <Col span={24}></Col>
                     <ButtonContainer>
                       <Button name="submit">{t("Enviar")}</Button>
                     </ButtonContainer>
