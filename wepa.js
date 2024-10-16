@@ -5,18 +5,10 @@ import { withTranslation, TFunction } from "react-i18next";
 import { Slide } from "react-awesome-reveal";
 import { Button } from "../../common/Button";
 import { MiddleBlockSection, Content, ContentWrapper } from "./styles";
-import {
-  ContactProps,
-  ValidationTypeProps,
-} from "../../components/ContactForm/types";
+import { ContactProps, ValidationTypeProps } from "../../components/ContactForm/types";
 import { useForm } from "../../common/utils/useForm";
 import validate from "../../common/utils/validationRules";
-import {
-  ContactContainer,
-  FormGroup,
-  Span,
-  ButtonContainer,
-} from "../../components/ContactForm/styles";
+import { ContactContainer, FormGroup, Span, ButtonContainer } from "../../components/ContactForm/styles";
 import TextArea from "../../common/TextArea";
 import Block from "../Block";
 
@@ -92,6 +84,14 @@ const CloseButton = styled.button`
   }
 `;
 
+const Contact = ({ title, content, id, t }: ContactProps) => {
+  const { values, errors, handleChange, handleSubmit } = useForm(validate);
+
+  const ValidationType = ({ type }: ValidationTypeProps) => {
+    const ErrorMessage = errors[type as keyof typeof errors];
+    return <Span>{ErrorMessage}</Span>;
+  };
+
 // MiddleBlock Component
 interface MiddleBlockProps {
   title: string;
@@ -101,11 +101,6 @@ interface MiddleBlockProps {
 }
 
 const MiddleBlock = ({ title, content, button, t }: MiddleBlockProps) => {
-  const { values, errors, handleChange, handleSubmit } = useForm(validate);
-  const ValidationType = ({ type }: ValidationTypeProps) => {
-    const ErrorMessage = errors[type as keyof typeof errors];
-    return <Span>{ErrorMessage}</Span>;
-  };
   const [isOpen, setIsOpen] = useState(false);
 
   const openModal = () => setIsOpen(true);
@@ -140,7 +135,7 @@ const MiddleBlock = ({ title, content, button, t }: MiddleBlockProps) => {
       {isOpen && (
         <ModalOverlay>
           <ModalContainer>
-            <ContactContainer id={"invest-container"}>
+            <ContactContainer id={id}>
               <Row justify="space-between" align="middle">
                 <Col lg={12} md={11} sm={24} xs={24}>
                   <Slide direction="left" triggerOnce>
@@ -193,4 +188,5 @@ const MiddleBlock = ({ title, content, button, t }: MiddleBlockProps) => {
     </MiddleBlockSection>
   );
 };
+
 export default withTranslation()(MiddleBlock);
