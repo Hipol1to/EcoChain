@@ -6,19 +6,12 @@ import { Slide } from "react-awesome-reveal";
 import { Button } from "../../common/Button";
 import { MiddleBlockSection, Content, ContentWrapper } from "./styles";
 import {
-  ContactProps,
-  ValidationTypeProps,
-} from "../../components/ContactForm/types";
-import { useForm } from "../../common/utils/useForm";
-import validate from "../../common/utils/validationRules";
-import {
   ContactContainer,
   FormGroup,
   Span,
-  ButtonContainer,
 } from "../../components/ContactForm/styles";
-import TextArea from "../../common/TextArea";
 import Block from "../Block";
+import { ethers } from "ethers";
 
 // Modal Styled Components
 const ModalOverlay = styled.div`
@@ -31,7 +24,7 @@ const ModalOverlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999; /* Ensure it is on top */
+  z-index: 999;
 `;
 
 const ModalContainer = styled.div`
@@ -40,7 +33,7 @@ const ModalContainer = styled.div`
   width: 500px;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  position: relative; /* To position the close button */
+  position: relative;
 `;
 
 const Title = styled.h1`
@@ -92,7 +85,6 @@ const CloseButton = styled.button`
   }
 `;
 
-// MiddleBlock Component
 interface MiddleBlockProps {
   title: string;
   content: string;
@@ -100,22 +92,73 @@ interface MiddleBlockProps {
   t: TFunction;
 }
 
-const MiddleBlock = ({ title, content, button, t }: MiddleBlockProps) => {
-  const { values, errors, handleChange, handleSubmit } = useForm(validate);
-  const ValidationType = ({ type }: ValidationTypeProps) => {
-    const ErrorMessage = errors[type as keyof typeof errors];
-    return <Span>{ErrorMessage}</Span>;
+interface Window {
+  ethereum?: {
+    isMetaMask?: boolean;
+    request: (...args: any[]) => Promise<any>;
   };
+}
+
+// MiddleBlock Component
+const MiddleBlock = ({ title, content, button, t }: MiddleBlockProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [amount, setAmount] = useState("");
+  const [recipient, setRecipient] = useState(""); // New recipient state
+  const [status, setStatus] = useState(""); // Status message
+
+  const defaultRecipient = "0x9c194a1dA7bAaF691a77176d56A1342a678B960B"; // Replace with your BSC address
 
   const openModal = () => setIsOpen(true);
-  const closeModal = () => setIsOpen(false);
+  const closeModal = () => {
+    // Reset form values and status
+    setAmount(""); // Clear the amount field
+    setStatus(""); // Clear the status message
+    setIsOpen(false); // Close the modal
+  };
 
-  const scrollTo = (id: string) => {
-    const element = document.getElementById(id) as HTMLDivElement;
-    element.scrollIntoView({
-      behavior: "smooth",
-    });
+  // MetaMask transaction handler
+  const handleInvest = async (e) => {
+    e.preventDefault();
+
+    if (!window.ethereum) {
+      setStatus("MetaMask is not installed!");
+      return;
+    }
+
+    try {
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = provider.getSigner();
+
+      const recipientAddress = defaultRecipient;
+
+      const tx = {
+        to: recipientAddress, // Binance address
+        value: ethers.parseEther(amount), // Amount to be sent
+        gasLimit: 21000,
+        gasPrice: ethers.parseUnits("10", "gwei"),
+      };
+
+      const transaction = await (await signer).sendTransaction(tx);
+      //setStatus("Transaction sent! Hash: " + transaction.hash);
+      setStatus(
+        "<img src='/img/loading.gif' style='max-width: 130px; height: 130px;'> <br> <p>Estamos procesando tu transacción.</p>, <br> <p>Por favor, espera.</p>"
+      );
+
+      await transaction.wait();
+      setStatus(
+        "<img src='/img/checked.png' style='max-width: 130px; height: 130px;'> <br><p>Transacción realizada.</p> <br> <p>Gracias por apoyar las finanzas sostenibles.</p>"
+      );
+    } catch (error) {
+      console.error(error);
+      let errorMessage = "";
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      setStatus(
+        "<img src='/img/failed.png' style='max-width: 130px; height: 130px;'> <br><p>Tu transacción no pudo ser realizada.</p> <br> <p>Por favor, inténtalo de nuevo.</p>"
+      );
+    }
   };
 
   return (
@@ -144,26 +187,27 @@ const MiddleBlock = ({ title, content, button, t }: MiddleBlockProps) => {
             <ContactContainer id={"invest-container"}>
               <Row justify="space-between" align="middle">
                 <Slide direction="right" triggerOnce>
-                  <FormGroup autoComplete="off" onSubmit={handleSubmit}>
+                  <FormGroup autoComplete="off" onSubmit={handleInvest}>
                     <Col span={24}>
                       <Block
                         title={"Apoya al futuro sostenible"}
                         content={
-                          "Únete a EcoChain y contribuye a las iniciativas globales de sostenibilidad mientras aprovechas una tecnología segura y de vanguardia."
+                          "Invierte en EcoChain y contribuye a las iniciativas globales de sostenibilidad con una tecnología segura y de vanguardia."
                         }
                       />
                       <Input
-                        type="text"
-                        name="Nombre"
-                        placeholder="Monto"
-                        onChange={handleChange}
+                        type="number"
+                        name="Monto"
+                        value={amount}
+                        placeholder="Monto (BNB)"
+                        onChange={(e) => setAmount(e.target.value)}
+                        required
                       />
-                      <ValidationType type="name" />
+                      <SubmitButton type="submit">{t("Invertir")}</SubmitButton>
+                      <br></br>
+                      {/* Render status message with HTML */}
+                      <div dangerouslySetInnerHTML={{ __html: status }}></div>
                     </Col>
-                    <Col span={24}></Col>
-                    <ButtonContainer>
-                      <Button name="submit">{t("Enviar")}</Button>
-                    </ButtonContainer>
                   </FormGroup>
                 </Slide>
               </Row>
