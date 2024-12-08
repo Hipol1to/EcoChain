@@ -27,12 +27,12 @@ export const Styles = createGlobalStyle`
         padding:0;
         border: 0;
         outline: 0;
-        background: #fff;
+        background: #f6f7f2;
         overflow-x: hidden;
     }
 
     a:hover {
-        color: #18216d;
+        color: #212b66;
     }
 
     input,
@@ -47,7 +47,7 @@ export const Styles = createGlobalStyle`
 
         :focus-within {
             background: none;
-            box-shadow: #2e186a 0px 0px 0px 1px;
+            box-shadow: #212b66 0px 0px 0px 1px;
         }
     }
 
@@ -58,7 +58,7 @@ export const Styles = createGlobalStyle`
     h5,
     h6 {
         font-family: 'Motiva Sans Bold', serif;
-        color: #18216d;
+        color: #212b66;
         font-size: 56px;
         line-height: 1.18;
 
@@ -72,7 +72,7 @@ export const Styles = createGlobalStyle`
     }
 
     p {
-        color: #18216d;
+        color: #212b66;
         font-size: 21px;        
         line-height: 1.41;
     }
@@ -84,10 +84,10 @@ export const Styles = createGlobalStyle`
     a {
         text-decoration: none;
         outline: none;
-        color: #2E186A;
+        color: #212b66;
 
         :hover {
-            color: #2e186a;
+            color: #212b66;
         }
     }
     

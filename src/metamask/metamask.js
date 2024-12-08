@@ -13,7 +13,9 @@ export function MetaMask() {
   // Function to send tokens using MetaMask
   const investTokens = async () => {
     if (!window.ethereum) {
-      setStatus("MetaMask is not installed!");
+      setStatus(
+        "No pudimos identificar tu billetera, asegurate de instalar MetaMask e intenta de nuevo"
+      );
       return;
     }
 

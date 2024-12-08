@@ -34,6 +34,7 @@ const ModalContainer = styled.div`
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   position: relative;
+  max-height: 95% !important;
 `;
 
 const Title = styled.h1`
@@ -59,7 +60,7 @@ const SubmitButton = styled.button`
   display: block;
   width: 100%;
   padding: 10px;
-  background-color: #6200ea;
+  background-color: #96c93e;
   color: white;
   border: none;
   border-radius: 5px;
@@ -67,7 +68,7 @@ const SubmitButton = styled.button`
   font-size: 16px;
 
   &:hover {
-    background-color: #3700b3;
+    background-color: #88b53a;
   }
 `;
 
@@ -121,7 +122,9 @@ const MiddleBlock = ({ title, content, button, t }: MiddleBlockProps) => {
     e.preventDefault();
 
     if (!window.ethereum) {
-      setStatus("MetaMask is not installed!");
+      setStatus(
+        "No pudimos identificar tu billetera, asegurate de instalar MetaMask e intenta de nuevo"
+      );
       return;
     }
 
@@ -156,13 +159,18 @@ const MiddleBlock = ({ title, content, button, t }: MiddleBlockProps) => {
         errorMessage = error.message;
       }
       setStatus(
-        "<img src='/img/failed.png' style='max-width: 130px; height: 130px;'> <br><p>Tu transacción no pudo ser realizada.</p> <br> <p>Por favor, inténtalo de nuevo.</p>"
+        "<img src='/img/failed.png' style='max-width: 40px; height: 40px;'><p>Tu transacción no pudo ser realizada.</p> <p>Por favor, inténtalo de nuevo.</p>"
       );
     }
   };
 
+  let goal = 0.0004; // Define your goal
+  let ammountCollected = 0.0002; // Define your current ammount
+
+  // Calculate progress as a percentage
+  const progress = Math.min((0.0003 / goal) * 100, 100); // Cap at 100%
   return (
-    <MiddleBlockSection>
+    <MiddleBlockSection id="invierte">
       <Slide direction="up" triggerOnce>
         <Row justify="center" align="middle">
           <ContentWrapper>
@@ -183,9 +191,35 @@ const MiddleBlock = ({ title, content, button, t }: MiddleBlockProps) => {
       {isOpen && (
         <ModalOverlay>
           <ModalContainer>
-            <CloseButton onClick={closeModal}>×</CloseButton>
+            {/* Progress Indicator */}
+            <div style={{ marginTop: "10px", textAlign: "center" }}>
+              <span>
+                Tokens reunidos: {ammountCollected} BNB &emsp; &emsp; &emsp;
+                &emsp; Meta: {goal} BNB
+              </span>
+              <div
+                style={{
+                  width: "100%",
+                  height: "10px",
+                  background: "#e0e0e0",
+                  borderRadius: "5px",
+                  marginTop: "5px",
+                  overflow: "hidden",
+                }}
+              >
+                <div
+                  style={{
+                    width: `${/*progress*/ 50}%`,
+                    height: "100%",
+                    background: "#4caf50",
+                  }}
+                ></div>
+              </div>
+              <span>{/*progress.toFixed(2)*/ 50}% del objetivo</span>
+            </div>
+            <CloseButton onClick={closeModal}>X</CloseButton>
             <ContactContainer id={"invest-container"}>
-              <Row justify="space-between" align="middle">
+              <Row justify="space-between">
                 <Slide direction="right" triggerOnce>
                   <FormGroup autoComplete="off" onSubmit={handleInvest}>
                     <Col span={24}>
@@ -203,10 +237,32 @@ const MiddleBlock = ({ title, content, button, t }: MiddleBlockProps) => {
                         onChange={(e) => setAmount(e.target.value)}
                         required
                       />
+                      <br />
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          marginLeft: "0px",
+                        }}
+                      >
+                        <span>Valor actual:</span>
+                        <span>Valor de lanzamiento:</span>
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          marginLeft: "0px",
+                        }}
+                      >
+                        <span>1 ECT = 0.00010 BNB</span>
+                        <span>1 ECT = 0.00080 BNB</span>
+                      </div>
+                      <br />
                       <SubmitButton type="submit">{t("Invertir")}</SubmitButton>
                       <br></br>
-                      {/* Render status message with HTML */}
                       <div dangerouslySetInnerHTML={{ __html: status }}></div>
+                      <p>Numero de Inversionistas: 14</p>
                     </Col>
                   </FormGroup>
                 </Slide>

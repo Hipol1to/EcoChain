@@ -3,11 +3,21 @@ import { Link } from "react-router-dom";
 import { MenuOutlined } from "@ant-design/icons";
 
 export const HeaderSection = styled("header")`
-  padding: 1rem 0.5rem;
-
   .ant-row-space-between {
     align-items: center;
     text-align: center;
+  }
+`;
+
+export const StatusBar = styled("div")`
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+  @media (max-width: 768px) {
+    display: none;
   }
 `;
 
@@ -41,7 +51,7 @@ export const Burger = styled("div")`
   display: none;
 
   svg {
-    fill: #2e186a;
+    fill: #212b66;
   }
 `;
 
@@ -59,7 +69,7 @@ export const Menu = styled("h5")`
 
 export const CustomNavLinkSmall = styled(NavLink)`
   font-size: 1.2rem;
-  color: #18216d;
+  color: #212b66;
   transition: color 0.2s ease-in;
   margin: 0.5rem 2rem;
 
@@ -88,8 +98,8 @@ export const Span = styled("span")`
   &:hover,
   &:active,
   &:focus {
-    color: rgb(255, 130, 92);
+    color: #f6f7f2;
     text-underline-position: under;
-    text-decoration: rgb(255, 130, 92) wavy underline;
+    text-decoration: #f6f7f2 wavy underline;
   }
 `;

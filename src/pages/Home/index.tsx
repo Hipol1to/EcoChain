@@ -26,9 +26,9 @@ const Home = () => {
         id="intro"
       />
       <MiddleBlock
-        title={MiddleBlockContent.title}
-        content={MiddleBlockContent.text}
-        button={MiddleBlockContent.button}
+        title={InvestBlockContent.title}
+        content={InvestBlockContent.text}
+        button={InvestBlockContent.button}
       />
       <ContentBlock
         direction="left"
@@ -54,9 +54,9 @@ const Home = () => {
         id="product"
       />
       <MiddleBlock
-        title={InvestBlockContent.title}
-        content={InvestBlockContent.text}
-        button={InvestBlockContent.button}
+        title={MiddleBlockContent.title}
+        content={MiddleBlockContent.text}
+        button={MiddleBlockContent.button}
       />
       <Contact
         title={ContactContent.title}

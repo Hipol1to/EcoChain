@@ -2,14 +2,14 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 export const FooterSection = styled("footer")`
-  background: rgb(241, 242, 243);
+  background: #f6f7f2;
   padding: 2.5rem 0;
 `;
 
 export const Title = styled("h4")`
   font-size: 22px;
   text-transform: capitalize;
-  color: #18216d;
+  color: #212b66;
 
   @media screen and (max-width: 414px) {
     padding: 1.5rem 0;
@@ -30,7 +30,7 @@ export const NavLink = styled(Link)`
 `;
 
 export const Extra = styled("section")`
-  background: rgb(241, 242, 243);
+  background: #f6f7f2;
   position: relative;
   width: 100%;
   margin-right: auto;
@@ -44,7 +44,7 @@ export const LogoContainer = styled("div")`
 `;
 
 export const Para = styled("div")`
-  color: #18216d;
+  color: #212b66;
   font-size: 14px;
   width: 70%;
 `;
@@ -62,23 +62,23 @@ export const Large = styled(Link)`
   max-width: max-content;
 
   &:hover {
-    color: rgb(255, 130, 92);
+    color: #f6f7f2;
     text-underline-position: under;
-    text-decoration: rgb(255, 130, 92) wavy underline;
+    text-decoration: #f6f7f2 wavy underline;
   }
 `;
 
 export const Chat = styled("p")`
-  color: #18216d;
+  color: #212b66;
   max-width: fit-content;
-  border-bottom: 1px solid #18216d;
+  border-bottom: 1px solid #212b66;
   cursor: pointer;
   margin-top: 1rem;
   transition: all 0.3s ease-in-out;
 
   &:hover {
-    border-bottom: 1px solid rgb(255, 130, 92);
-    color: rgb(255, 130, 92);
+    border-bottom: 1px solid #f6f7f2;
+    color: #f6f7f2;
   }
 `;
 
@@ -121,7 +121,7 @@ export const FooterContainer = styled("div")`
     height: 25px;
 
     &:hover {
-      fill: rgb(255, 130, 92);
+      fill: #f6f7f2;
     }
   }
 `;
@@ -129,7 +129,7 @@ export const FooterContainer = styled("div")`
 export const Language = styled("h4")`
   font-size: 22px;
   text-transform: capitalize;
-  color: #18216d;
+  color: #212b66;
 
   @media screen and (max-width: 414px) {
     padding: 1.5rem 0;
@@ -139,7 +139,7 @@ export const Language = styled("h4")`
 export const Label = styled("label")`
   font-size: 22px;
   text-transform: capitalize;
-  color: #18216d;
+  color: #212b66;
   display: block;
   margin-bottom: 2rem;
   font-family: "Motiva Sans Bold", serif;
