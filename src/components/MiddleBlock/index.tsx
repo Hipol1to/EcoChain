@@ -1,4 +1,21 @@
 import { useState } from "react";
+import {
+  getGlobalString,
+  getGlobalString2,
+  getGlobalString3,
+  getGlobalString4,
+  getGlobalString5,
+  getGlobalString6,
+} from "../utils/global";
+import {
+  Transaction,
+  insertTransaction,
+  getRecipientWallet,
+  getAmmountCollected,
+  getEcoChainCurrentValue,
+  getEcoChainReleaseValue,
+  getInvestorsNumber,
+} from "../utils/transactionsHelper";
 import styled from "styled-components";
 import { Row, Col } from "antd";
 import { withTranslation, TFunction } from "react-i18next";
@@ -107,7 +124,10 @@ const MiddleBlock = ({ title, content, button, t }: MiddleBlockProps) => {
   const [recipient, setRecipient] = useState(""); // New recipient state
   const [status, setStatus] = useState(""); // Status message
 
-  const defaultRecipient = "0x9c194a1dA7bAaF691a77176d56A1342a678B960B"; // Replace with your BSC address
+  //  const defaultRecipient = "0x9c194a1dA7bAaF691a77176d56A1342a678B960B"; // Replace with your BSC
+  getRecipientWallet();
+  const defaultRecipient = String(getGlobalString2()); // Replace with your BSC
+  console.log("ei resipiente es: " + defaultRecipient);
 
   const openModal = () => setIsOpen(true);
   const closeModal = () => {
@@ -132,8 +152,10 @@ const MiddleBlock = ({ title, content, button, t }: MiddleBlockProps) => {
       await window.ethereum.request({ method: "eth_requestAccounts" });
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = provider.getSigner();
+      console.log("tertoss");
 
       const recipientAddress = defaultRecipient;
+      console.log("tertoss");
 
       const tx = {
         to: recipientAddress, // Binance address
@@ -142,7 +164,10 @@ const MiddleBlock = ({ title, content, button, t }: MiddleBlockProps) => {
         gasPrice: ethers.parseUnits("10", "gwei"),
       };
 
+      console.log("tertoss");
       const transaction = await (await signer).sendTransaction(tx);
+      console.log("tertoss");
+
       //setStatus("Transaction sent! Hash: " + transaction.hash);
       setStatus(
         "<img src='/img/loading.gif' style='max-width: 130px; height: 130px;'> <br> <p>Estamos procesando tu transacción.</p>, <br> <p>Por favor, espera.</p>"
@@ -152,6 +177,18 @@ const MiddleBlock = ({ title, content, button, t }: MiddleBlockProps) => {
       setStatus(
         "<img src='/img/checked.png' style='max-width: 130px; height: 130px;'> <br><p>Transacción realizada.</p> <br> <p>Gracias por apoyar las finanzas sostenibles.</p>"
       );
+      let montows = tx.value;
+      let recevierr = defaultRecipient;
+      let senderrs = getGlobalString();
+      console.log("er montos" + montows);
+      console.log("er resestor" + recevierr);
+      console.log("er remistente" + senderrs);
+      let newTransaction = {
+        sender: senderrs.toString(),
+        receiver: recevierr.toString(),
+        amount: Number(montows),
+      };
+      insertTransaction(newTransaction);
     } catch (error) {
       console.error(error);
       let errorMessage = "";
@@ -164,11 +201,21 @@ const MiddleBlock = ({ title, content, button, t }: MiddleBlockProps) => {
     }
   };
 
-  let goal = 0.0004; // Define your goal
-  let ammountCollected = 0.0002; // Define your current ammount
+  getAmmountCollected();
+  getEcoChainCurrentValue();
+  getEcoChainReleaseValue();
+  getInvestorsNumber();
+  let ammountCollected = getGlobalString3(); // Define your current ammount
+  let goal = Number(Number(ammountCollected).toFixed(5)) * 2; // Define your goal
+  let currentEcochainValue = Number(getGlobalString4()).toFixed(5);
+  let releaseEcochainValue = Number(getGlobalString5()).toFixed(5);
+  let investorsNumber = getGlobalString6();
 
   // Calculate progress as a percentage
-  const progress = Math.min((0.0003 / goal) * 100, 100); // Cap at 100%
+  const progress = Math.min(
+    (Number(ammountCollected) / Number(goal)) * 100,
+    100
+  ); // Cap at 100%
   return (
     <MiddleBlockSection id="invierte">
       <Slide direction="up" triggerOnce>
@@ -209,13 +256,13 @@ const MiddleBlock = ({ title, content, button, t }: MiddleBlockProps) => {
               >
                 <div
                   style={{
-                    width: `${/*progress*/ 50}%`,
+                    width: `${progress}%`,
                     height: "100%",
                     background: "#4caf50",
                   }}
                 ></div>
               </div>
-              <span>{/*progress.toFixed(2)*/ 50}% del objetivo</span>
+              <span>{progress.toFixed(2)}% del objetivo</span>
             </div>
             <CloseButton onClick={closeModal}>X</CloseButton>
             <ContactContainer id={"invest-container"}>
@@ -255,14 +302,14 @@ const MiddleBlock = ({ title, content, button, t }: MiddleBlockProps) => {
                           marginLeft: "0px",
                         }}
                       >
-                        <span>1 ECT = 0.00010 BNB</span>
-                        <span>1 ECT = 0.00080 BNB</span>
+                        <span>1 ECT = {currentEcochainValue} BNB</span>
+                        <span>1 ECT = {releaseEcochainValue} BNB</span>
                       </div>
                       <br />
                       <SubmitButton type="submit">{t("Invertir")}</SubmitButton>
                       <br></br>
                       <div dangerouslySetInnerHTML={{ __html: status }}></div>
-                      <p>Numero de Inversionistas: 14</p>
+                      <p>Numero de Inversionistas: {investorsNumber}</p>
                     </Col>
                   </FormGroup>
                 </Slide>

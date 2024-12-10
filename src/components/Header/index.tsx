@@ -3,6 +3,7 @@ import { ethers } from "ethers"; // Use ethers directly
 import { Row, Col, Drawer } from "antd";
 import { withTranslation, TFunction } from "react-i18next";
 import Container from "../../common/Container";
+import { getGlobalString, setGlobalString } from "../utils/global";
 import { SvgIcon } from "../../common/SvgIcon";
 import { Button } from "../../common/Button";
 import {
@@ -33,6 +34,8 @@ const Header = ({ t }: { t: TFunction }) => {
         const provider = new ethers.BrowserProvider(window.ethereum);
         const accounts = await provider.send("eth_requestAccounts", []);
         setAccount(accounts[0]);
+        let currentAccount = account;
+        setGlobalString(currentAccount);
 
         // Get balance
         const balance = await provider.getBalance(accounts[0]);
