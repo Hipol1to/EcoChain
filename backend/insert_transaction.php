@@ -40,6 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } catch (Exception $e) {
         http_response_code(500); // Internal Server Error
         echo json_encode(['error' => 'Failed to insert transaction', 'details' => $e->getMessage()]);
+        echo $sender;
+        echo $receiver;
+        echo $amount;
     }
 } else {
     http_response_code(405); // Method Not Allowed

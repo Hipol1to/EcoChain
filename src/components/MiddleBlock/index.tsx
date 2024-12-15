@@ -51,7 +51,7 @@ const ModalContainer = styled.div`
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   position: relative;
-  max-height: 95% !important;
+  //max-height: 95% !important;
 `;
 
 const Title = styled.h1`
@@ -120,6 +120,7 @@ interface Window {
 // MiddleBlock Component
 const MiddleBlock = ({ title, content, button, t }: MiddleBlockProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [account, setAccount] = useState(null);
   const [amount, setAmount] = useState("");
   const [recipient, setRecipient] = useState(""); // New recipient state
   const [status, setStatus] = useState(""); // Status message
@@ -151,8 +152,11 @@ const MiddleBlock = ({ title, content, button, t }: MiddleBlockProps) => {
     try {
       await window.ethereum.request({ method: "eth_requestAccounts" });
       const provider = new ethers.BrowserProvider(window.ethereum);
+      const accounts = await provider.send("eth_requestAccounts", []);
+      setAccount(accounts[0]);
       const signer = provider.getSigner();
       console.log("tertoss");
+      console.log(signer);
 
       const recipientAddress = defaultRecipient;
       console.log("tertoss");
@@ -170,23 +174,23 @@ const MiddleBlock = ({ title, content, button, t }: MiddleBlockProps) => {
 
       //setStatus("Transaction sent! Hash: " + transaction.hash);
       setStatus(
-        "<img src='/img/loading.gif' style='max-width: 130px; height: 130px;'> <br> <p>Estamos procesando tu transacción.</p>, <br> <p>Por favor, espera.</p>"
+        "<img src='/img/loading.gif' style='max-width: 40px; height: 40px;'> <p>Estamos procesando tu transacción. Por favor, espera.</p>"
       );
 
       await transaction.wait();
       setStatus(
-        "<img src='/img/checked.png' style='max-width: 130px; height: 130px;'> <br><p>Transacción realizada.</p> <br> <p>Gracias por apoyar las finanzas sostenibles.</p>"
+        "<img src='/img/checked.png' style='max-width: 40px; height: 40px;'> <br><p>Transacción realizada. Gracias por apoyar las finanzas sostenibles.</p>"
       );
       let montows = tx.value;
       let recevierr = defaultRecipient;
-      let senderrs = getGlobalString();
-      console.log("er montos" + montows);
+      let senderrs = account;
+      console.log("er montos" + amount);
       console.log("er resestor" + recevierr);
       console.log("er remistente" + senderrs);
       let newTransaction = {
-        sender: senderrs.toString(),
+        sender: String(accounts),
         receiver: recevierr.toString(),
-        amount: Number(montows),
+        amount: Number(amount),
       };
       insertTransaction(newTransaction);
     } catch (error) {
@@ -196,7 +200,7 @@ const MiddleBlock = ({ title, content, button, t }: MiddleBlockProps) => {
         errorMessage = error.message;
       }
       setStatus(
-        "<img src='/img/failed.png' style='max-width: 40px; height: 40px;'><p>Tu transacción no pudo ser realizada.</p> <p>Por favor, inténtalo de nuevo.</p>"
+        "<img src='/img/failed.png' style='max-width: 40px; height: 40px;'><p>Tu transacción no pudo ser realizada. Por favor, inténtalo de nuevo.</p>"
       );
     }
   };
@@ -212,10 +216,12 @@ const MiddleBlock = ({ title, content, button, t }: MiddleBlockProps) => {
   let investorsNumber = getGlobalString6();
 
   // Calculate progress as a percentage
-  const progress = Math.min(
-    (Number(ammountCollected) / Number(goal)) * 100,
-    100
-  ); // Cap at 100%
+  const progress = !Number.isNaN(
+    Math.min((Number(ammountCollected) / Number(goal)) * 100, 100)
+  )
+    ? Math.min((Number(ammountCollected) / Number(goal)) * 100, 100) // Use the valid calculation
+    : 0; // Use 0 when the result is NaN
+
   return (
     <MiddleBlockSection id="invierte">
       <Slide direction="up" triggerOnce>
@@ -277,13 +283,20 @@ const MiddleBlock = ({ title, content, button, t }: MiddleBlockProps) => {
                         }
                       />
                       <Input
-                        type="number"
+                        type="text" // Use "text" instead of "number" to fully control the input
                         name="Monto"
                         value={amount}
                         placeholder="Monto (BNB)"
-                        onChange={(e) => setAmount(e.target.value)}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          // Regex to match numbers with up to 5 decimal places
+                          if (/^\d*\.?\d{0,5}$/.test(value)) {
+                            setAmount(value); // Update the value if it matches the regex
+                          }
+                        }}
                         required
                       />
+
                       <br />
                       <div
                         style={{

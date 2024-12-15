@@ -17,6 +17,13 @@ export const insertTransaction = async (transaction: Transaction) => {
   try {
     console.log("inseita");
 
+    console.log("ew");
+
+    console.log(transaction.sender);
+    console.log(transaction.receiver);
+    console.log(transaction.amount);
+    console.log("ti");
+
     const response = await axios.post(
       "http://localhost/endpoint/insert_transaction.php",
       {
